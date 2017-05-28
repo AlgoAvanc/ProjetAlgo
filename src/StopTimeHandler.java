@@ -8,7 +8,7 @@ import java.util.Set;
  * Created by etien on 25/05/2017.
  */
 public class StopTimeHandler {
-    protected Set<List<List<String>>> stopList = new HashSet<List<List<String>>>();
+    protected Set<List<String>> stopList = new HashSet<List<String>>();
 
     public StopTimeHandler(FileReader file) {
 
@@ -39,10 +39,10 @@ public class StopTimeHandler {
     // --------------------------------------------- La librairie de construction -------------------------------
     // ----------------------------------------------------------------------------------------------------------
 
-    protected static Set<List<List<String>>> linesPack (List<List<String>> lines, int trip_idIndex, int arrival_timeIndex, int stop_idIndex, int stop_sequenceIndex){
-        Set<List<List<String>>> pack = new HashSet<List<List<String>>>();
+    protected static Set<List<String>> linesPack (List<List<String>> lines, int trip_idIndex, int arrival_timeIndex, int stop_idIndex, int stop_sequenceIndex){
+        Set<List<String>> pack = new HashSet<List<String>>();
         String tripId = "premierId";
-        List<List<String>> trip = new ArrayList<List<String>>();
+        List<String> trip = new ArrayList<String>();
         boolean outOfTime = false;
 
 
@@ -52,13 +52,14 @@ public class StopTimeHandler {
                     pack.add(trip);
                 }
                 tripId = line.get(trip_idIndex);
-                trip = new ArrayList<List<String>>();
+                trip = new ArrayList<String>();
                 outOfTime = false;
             }
             if (!line.get(arrival_timeIndex).substring(0,1).equals("1")){
                 outOfTime=true;
             }
-            trip.add(lineReduce(line,stop_idIndex,stop_sequenceIndex));
+//            trip.add(lineReduce(line,stop_idIndex,stop_sequenceIndex));
+            trip.add(line.get(stop_idIndex));
         }
         pack.remove(new ArrayList<List<String>>() );
         return pack;
@@ -83,6 +84,10 @@ public class StopTimeHandler {
         return "StopTimeHandler{" +
                 "stopList=" + stopList +
                 '}';
+    }
+
+    public Set<List<String>> getStopList() {
+        return stopList;
     }
 }
 
