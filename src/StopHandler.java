@@ -24,7 +24,7 @@ public class StopHandler {
 
         for (List<String> fileLine :lines
              ) {
-            nameOfId.put(fileLine.get(stop_idIndex), fileLine.get(stop_nameIndex));
+            nameOfId.put(fileLine.get(stop_idIndex), fileLine.get(stop_nameIndex).replace("\"", ""));//ya des quotes en trop si non
 
             Map<String,String> stop = Stops.get(fileLine.get(stop_nameIndex));
             if (stop==null){
@@ -36,7 +36,7 @@ public class StopHandler {
             }else {
                 stop.put("ids",stop.get("ids")+" ; "+fileLine.get(stop_idIndex));
             }
-            Stops.put(fileLine.get(stop_nameIndex), stop);
+            Stops.put(fileLine.get(stop_nameIndex).replace("\"", ""), stop);
         }
         System.out.println("test");
     }

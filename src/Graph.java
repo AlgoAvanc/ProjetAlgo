@@ -29,7 +29,7 @@ public class Graph {
 
     }
     protected Graph graphFromSmallListAndStopContent (List<String> smallList, Map<String, String> nameOfId,  Map<String,Map> stops){ // l'argument stops c'est du Map<String,Map<String,String>> en vrai mais il veux pas être aussi précis
-        Graph graph = new Graph();
+        Graph subGraph = new Graph();
         Node oldNode = new Node();
         Node nowNode = new Node();
         for (int i = smallList.size()-1; i > -1 ; i--) { // on va décroissant car on ajoute des liens entre deux Edges existants (les deriers de listes ne sont liés à personne)
@@ -48,9 +48,9 @@ public class Graph {
                 nowNode.addEdge(new Edge(nowNode,oldNode));
             }
             // --------------- les conséquences sur le graph ---------------
-            graph.addNode(nowNode);
+            subGraph.addNode(nowNode);
         }
-        return graph;
+        return subGraph;
     }
 
     public void addNode (Node node){

@@ -35,6 +35,7 @@ public class Node {
     // ----------------------------------------------------------------------------------------------------------
     public void merge(Node nodeToMerge){
         this.mergeEdgeList(nodeToMerge.getEdgesList());
+        this.lines.removeAll(nodeToMerge.getLines());
         this.lines.addAll(nodeToMerge.getLines());
     }
 
