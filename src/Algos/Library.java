@@ -20,4 +20,8 @@ public class Library {
 
         return 6366000*tt;
     }
+    public static String DatasDirectory ="lines_datas";
+    public static String linesDirectory(String line) {return DatasDirectory+"/RATP_GTFS_METRO_"+ line;}
+    public static String stopTimesDirectory (String line) {return linesDirectory(line)+"/stop_times.txt";}
+    public static String stopDirectory (String line) {return linesDirectory(line)+"/stops.txt";}
 }

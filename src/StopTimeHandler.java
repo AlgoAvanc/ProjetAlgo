@@ -26,7 +26,7 @@ public class StopTimeHandler {
         List<List<String>> lines = file.getLines();
 
         this.stopList = linesPack(lines,trip_idIndex,arrival_timeIndex,stop_idIndex,stop_sequenceIndex);
-        System.out.println(this.stopList);
+//        System.out.println(this.stopList);
 
 
 

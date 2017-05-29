@@ -1,3 +1,6 @@
+import Algos.Library;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +19,18 @@ public class Graph {
 
 
     // ----------------------------------------------------------------------------------------------------------
-    // ----------------------------------------- Add Functions --------------------------------------------------
+    // ----------------------------------------- Creation Functions ---------------------------------------------
     // ----------------------------------------------------------------------------------------------------------
-    public  void  addLine(StopTimeHandler stopTimeHandler, StopHandler stopHandler){ //pour ajouter une ligne de métro
+    public void addLine(String line) throws IOException {
+        FileReader fr1StopTimes = new FileReader(Library.stopTimesDirectory(line));
+        StopTimeHandler handleStopTimes1 = new StopTimeHandler(fr1StopTimes);
+
+        FileReader fr1Stops = new FileReader(Library.stopDirectory(line));
+        StopHandler handleStops1 = new StopHandler(fr1Stops,line);
+
+        this.addLine(handleStopTimes1,handleStops1);
+    }
+    protected   void  addLine(StopTimeHandler stopTimeHandler, StopHandler stopHandler){ //pour ajouter une ligne de métro
         Map<String, String> nameOfId = stopHandler.getNameOfId();
         Map<String, Map> stops = stopHandler.getStops();
         for (List<String> subStopList : new ArrayList<List>(stopTimeHandler.getStopList()) // on prend tous les sets de liste d'arrets
@@ -42,7 +54,7 @@ public class Graph {
             nowNode = new Node(); // on ré instancie si non on ne va faire que réécrire sur la meme instance
             nowNode.setId(nodeName);
             nowNode.setLatitude(Double.parseDouble(stop.get("latitude")));
-            nowNode.setLatitude(Double.parseDouble(stop.get("longitude")));
+            nowNode.setLongitude(Double.parseDouble(stop.get("longitude")));
             nowNode.addLine(stop.get("ligne"));
             if (i!= smallList.size()-1){
                 nowNode.addEdge(new Edge(nowNode,oldNode));
@@ -59,11 +71,9 @@ public class Graph {
         this.edges.removeAll(node.getEdgesList());//au cas ou il y aie des duplicatas
         this.edges.addAll(node.getEdgesList());
     }
-//arrayList1.removeAll(arrayList2); // remove duplicates
-//arrayList1.addAll(arrayList2);  // merge
 
-    public void merge (Graph graphToMerge){
-        List<Node> toMergeNodes = graphToMerge.getNodes();
+    protected void merge (Graph graphToMerge){
+        List<Node>toMergeNodes = graphToMerge.getNodes();
         List<Edge>toMergeEdges = graphToMerge.getEdges();
 
         for (Node toMergeNode:toMergeNodes //on prend chaque node à merger, si la station existe déjà, les deux mergent, si non, on la rajoute
@@ -85,6 +95,16 @@ public class Graph {
             Node to = toAjustEdge.getTo();
             toAjustEdge.setTo(this.getStationNode(to.getId()));
         }
+        this.edges.addAll(toMergeEdges);
+        this.edges = Edge.removeDuplicatesInList(this.edges);
+
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+    // --------------------------------------------- Fonctions de réparation ------------------------------------
+    // ----------------------------------------------------------------------------------------------------------
+    public void consolidate () {
+        this.edges = Edge.consolidateEdgeList(this.edges,this);
 
     }
 

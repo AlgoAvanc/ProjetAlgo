@@ -46,6 +46,22 @@ public class Node {
         }
         this.edgesList.removeAll(edgesListToMerge);
         this.edgesList.addAll(edgesListToMerge);
+        this.edgesList = Edge.removeDuplicatesInList(this.edgesList);
+    }
+
+
+    // --------------- Consolidate ---------------
+
+    public void consolidateEdgeOfNode (Edge edge){
+        if (edge.getFromId().equals(this.id)){
+//            for (Edge subEdge :this.edgesList) {
+            for (int i = 0; i <this.edgesList.size() ; i++) {
+                Edge subEdge = this.edgesList.get(i);
+                if (subEdge.getToId().equals(edge.getToId()) && subEdge.length==edge.getLength()){
+                    this.edgesList.set(i,edge);
+                }
+            }
+        }
     }
 
 

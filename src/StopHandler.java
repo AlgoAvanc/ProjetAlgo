@@ -38,7 +38,6 @@ public class StopHandler {
             }
             Stops.put(fileLine.get(stop_nameIndex).replace("\"", ""), stop);
         }
-        System.out.println("test");
     }
 
     // ----------------------------------------------------------------------------------------------------------
