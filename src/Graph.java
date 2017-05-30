@@ -1,6 +1,10 @@
 import Algos.Library;
+import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +34,7 @@ public class Graph {
 
         this.addLine(handleStopTimes1,handleStops1);
     }
+
     protected   void  addLine(StopTimeHandler stopTimeHandler, StopHandler stopHandler){ //pour ajouter une ligne de métro
         Map<String, String> nameOfId = stopHandler.getNameOfId();
         Map<String, Map> stops = stopHandler.getStops();
@@ -40,6 +45,7 @@ public class Graph {
         }
 
     }
+
     protected Graph graphFromSmallListAndStopContent (List<String> smallList, Map<String, String> nameOfId,  Map<String,Map> stops){ // l'argument stops c'est du Map<String,Map<String,String>> en vrai mais il veux pas être aussi précis
         Graph subGraph = new Graph();
         Node oldNode = new Node();
@@ -101,12 +107,42 @@ public class Graph {
     }
 
     // ----------------------------------------------------------------------------------------------------------
-    // --------------------------------------------- Fonctions de réparation ------------------------------------
+    // ------------------------------------ Fonctions de sauvegarde et de réparation ----------------------------
     // ----------------------------------------------------------------------------------------------------------
     public void consolidate () {
         this.edges = Edge.consolidateEdgeList(this.edges,this);
+    }
+    public static Graph loadJson (){
+        Gson gson = new Gson();
+        List<String> rawLines = null;
+        try {
+            rawLines = Files.readAllLines(Paths.get(Library.DatasDirectory+"/data.json"), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Graph graph = gson.fromJson(rawLines.get(0), Graph.class);
+        graph.consolidate();
+        return graph;
+    }
+    public void saveInJson (){
+        Gson gson = new Gson();
+
+        String myObjectJson = gson.toJson(this);
+        List<String> jsonInput = new ArrayList<String>();
+        jsonInput.add(myObjectJson);
+
+        try {
+            Files.write(Paths.get(Library.DatasDirectory+"/data.json"),jsonInput, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
 
     }
+
 
 
 

@@ -10,10 +10,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Graph metroGraph = new Graph();
-
+//        Graph metroGraph = new Graph();
 //        metroGraph.addLine("1");
-//
 //        metroGraph.addLine("2");
 //        metroGraph.addLine("3");
 //        metroGraph.addLine("3b");
@@ -29,55 +27,11 @@ public class Main {
 //        metroGraph.addLine("12");
 //        metroGraph.addLine("13");
 //        metroGraph.addLine("14");
-//
-        Gson metroGrapgGson = new Gson();
-//
-//        String myObjectJson = metroGrapgGson.toJson(metroGraph);
-//        List<String> jsonInput = new ArrayList<String>();
-//        jsonInput.add(myObjectJson);
-//
-//        try {
-//            Files.write(Paths.get(Library.DatasDirectory+"/data.json"),jsonInput, StandardCharsets.UTF_8);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+//        metroGraph.saveInJson();
 
-
-        List<String> rawLines = Files.readAllLines(Paths.get(Library.DatasDirectory+"/data.json"),StandardCharsets.UTF_8);
-
-
-
-
-        Graph newMetroGraph = metroGrapgGson.fromJson(rawLines.get(0), Graph.class);
-        newMetroGraph.consolidate();
-        double testDist = Library.meterDistanceBetweenGPSPoints(45.613677, 5.885025,45.605640, 5.889892);
-        System.out.println(testDist);
+        Graph metroGraph = Graph.loadJson();
+        System.out.println("fini");
 
 
     }
 }
-
-//try {
-//            SerializableGraph serializableGraph = new SerializableGraph(metroGraph);
-//
-//            // write object to file
-//            FileOutputStream fos = new FileOutputStream("metroGraph.ser");
-//            ObjectOutputStream oos = new ObjectOutputStream(fos);
-//            oos.writeObject(serializableGraph);
-//            oos.close();
-//
-//            // read object from file
-//            FileInputStream fis = new FileInputStream("metroGraph.ser");
-//            ObjectInputStream ois = new ObjectInputStream(fis);
-//            SerializableGraph result = (SerializableGraph) ois.readObject();
-//            ois.close();
-//
-//            System.out.println("ca marche");
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
