@@ -21,9 +21,9 @@ public class StopHandler {
         int stop_nameIndex = file.getFirstLine().indexOf("stop_name");
         int stop_latIndex = file.getFirstLine().indexOf("stop_lat");
         int stop_lonIndex = file.getFirstLine().indexOf("stop_lon");
-        List<List<String>> lines = file.getLines();
+        ArrayList<ArrayList<String>> lines = file.getLines();
 
-        for (List<String> fileLine :lines
+        for (ArrayList<String> fileLine :lines
              ) {
             nameOfId.put(fileLine.get(stop_idIndex), fileLine.get(stop_nameIndex).replace("\"", ""));//ya des quotes en trop si non
 

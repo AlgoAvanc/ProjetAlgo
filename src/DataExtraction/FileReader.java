@@ -10,17 +10,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FileReader {
-    protected List<List<String>> lines;
-    protected List<String> firstLine;
+    protected ArrayList<ArrayList<String>> lines;
+    protected ArrayList<String> firstLine;
 
     // ----------------------------------------------------------------------------------------------------------
     // --------------------------------------------- Constructers -----------------------------------------------
     // ----------------------------------------------------------------------------------------------------------
 
     public FileReader(String filepath,String separator) throws IOException {
-        List<String> rawLines = Files.readAllLines(Paths.get(filepath),
+        ArrayList<String> rawLines = Files.readAllLines(Paths.get(filepath),
                 StandardCharsets.UTF_8);
-        this.lines = new ArrayList<List<String>>();
+        this.lines = new ArrayList<ArrayList<String>>();
 //        firstLine =  Arrays.asList(rawLines.get(0).split(separator)); // on met ici la première ligne qui contient les infos des colones
         firstLine =  Arrays.asList(rawLines.get(0).split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1)); // c'est pas moi qui ai inventé cette regex de la mort: cf https://stackoverflow.com/questions/1757065/java-splitting-a-comma-separated-string-but-ignoring-commas-in-quotes
         for (int index = 1; index< rawLines.size(); index++) {
@@ -38,17 +38,17 @@ public class FileReader {
     // --------------------------------------------- Getters & setters ------------------------------------------
     // ----------------------------------------------------------------------------------------------------------
 
-    public List<List<String>> getLines() {
+    public ArrayList<ArrayList<String>> getLines() {
         return lines;
     }
-    public List<String> getLine(int index) {
+    public ArrayList<String> getLine(int index) {
             return lines.get(index);
     }
-    public List<String> getFirstLine() {
+    public ArrayList<String> getFirstLine() {
             return firstLine;
     }
 
-    public void setLines(List<List<String>> lines) {
+    public void setLines(ArrayList<ArrayList<String>> lines) {
         this.lines = lines;
     }
 

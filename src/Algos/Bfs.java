@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static Algos.Library.BubleSortArrylist;
+
 public class Bfs {
     public ArrayList<Boolean> marked;
     public ArrayList<Integer> previous;
@@ -24,24 +26,24 @@ public class Bfs {
         ArrayList<Integer> toVisit = new ArrayList<>();
         toVisit.add(startIndex);
         while (!toVisit.isEmpty()) {
-            int beingVisited = toVisit.get(0);
+            int beingVisitedIndex = toVisit.get(0);
             toVisit.remove(0);
-            if (beingVisited == startIndex){
-                distance.set(beingVisited,0);
-            } else {distance.set(beingVisited, distance.get( previous.get(beingVisited) ) +1 );}
+            if (beingVisitedIndex == startIndex){
+                distance.set(beingVisitedIndex,0);
+            } else {distance.set(beingVisitedIndex, distance.get( previous.get(beingVisitedIndex) ) +1 );}
 
-            ArrayList neighbours = graph.getNeightboursSimple(beingVisited);
+            ArrayList neighbours = graph.getIndexOfNodeNeighbours(beingVisitedIndex);
             if (neighbours != null){
-                ArrayList<Integer> sortedNeighbours = SortingFunctions.BubleSortArrylist(neighbours);
+                ArrayList<Integer> sortedNeighbours = BubleSortArrylist(neighbours);
                 for (int n = 0 ; n<sortedNeighbours.size(); n++){
                     int neightbour = sortedNeighbours.get(n);
                     if (!marked.get(neightbour)){
-                        previous.set(neightbour,beingVisited);
+                        previous.set(neightbour,beingVisitedIndex);
                         toVisit.add(neightbour);
                     }
                 }
             }
-            marked.set(beingVisited, true);
+            marked.set(beingVisitedIndex, true);
         }
     }
 
