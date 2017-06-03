@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Node {
     protected String id;
-    protected ArrayList<Edge> edgesList;
+    protected List<Edge> edgesList;
     protected double latitude;
     protected double longitude;
-    protected ArrayList<String> lines;
+    protected List<String> lines;
 
 
     public Node(String id, double latitude, double longitude) {
@@ -41,7 +41,7 @@ public class Node {
         this.lines.addAll(nodeToMerge.getLines());
     }
 
-    public void mergeEdgeList(ArrayList<Edge> edgesListToMerge){
+    public void mergeEdgeList(List<Edge> edgesListToMerge){
         for (Edge edge: edgesListToMerge
              ) {
             edge.setFrom(this);//on réoriente les from qui sont appelés par référence
@@ -75,7 +75,7 @@ public class Node {
         return id;
     }
 
-    public ArrayList<Edge> getEdgesList() {
+    public List<Edge> getEdgesList() {
         return edgesList;
     }
 
@@ -87,7 +87,7 @@ public class Node {
         return longitude;
     }
 
-    public ArrayList<String> getLines() {
+    public List<String> getLines() {
         return lines;
     }
 
@@ -95,7 +95,7 @@ public class Node {
         this.id = id;
     }
 
-    public void setEdgesList(ArrayList<Edge> edgesList) {
+    public void setEdgesList(List<Edge> edgesList) {
         this.edgesList = edgesList;
     }
 
@@ -107,7 +107,7 @@ public class Node {
         this.longitude = longitude;
     }
 
-    public void setLines(ArrayList<String> lines) {
+    public void setLines(List<String> lines) {
         this.lines = lines;
     }
 }

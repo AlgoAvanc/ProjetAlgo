@@ -66,7 +66,7 @@ protected double length;
     // --------------------------------------------- Méthodes Statiques -----------------------------------------
     // ----------------------------------------------------------------------------------------------------------
 
-    public static ArrayList<Edge> removeDuplicatesInList (ArrayList<Edge> edgesList){
+    public static List<Edge> removeDuplicatesInList (List<Edge> edgesList){
         if (edgesList.size()<2){return edgesList;}
         for (int i = 0; i < edgesList.size(); i++) {
             Edge edge1 = edgesList.get(i);
@@ -87,7 +87,7 @@ protected double length;
 
         this.from.consolidateEdgeOfNode(this);
     }
-    public static ArrayList<Edge> consolidateEdgeList (ArrayList<Edge> edgesList,Graph graph){
+    public static List<Edge> consolidateEdgeList (List<Edge> edgesList,Graph graph){
         for (Edge edge:edgesList) {
             edge.consolidate(graph);
         }

@@ -24,25 +24,4 @@ public class Library {
     public static String linesDirectory(String line) {return DatasDirectory+"/RATP_GTFS_METRO_"+ line;}
     public static String stopTimesDirectory (String line) {return linesDirectory(line)+"/stop_times.txt";}
     public static String stopDirectory (String line) {return linesDirectory(line)+"/stops.txt";}
-
-    public static ArrayList<Integer> swapArraylist(ArrayList<Integer> data, int i, int j){
-        int tmp= data.get(i);
-        data.set(i,data.get(j));
-        data.set(j,tmp);
-        return data;
-    }
-    public static ArrayList<Integer> BubleSortArrylist(ArrayList<Integer> data){
-        if(data.size() < 2){return data;}
-        boolean hadToSwap = false;
-        do{
-            hadToSwap=false;
-            for(int i= 0; i != data.size()-1; ++i){
-                if(data.get(i) >data.get(i+1)){
-                    data = swapArraylist(data, i, i+1);
-                    hadToSwap= true;
-                } }
-        }while(hadToSwap);
-        return data;
-    }
-
 }

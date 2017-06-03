@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Graph {
-    ArrayList<Node> nodes;
-    ArrayList<String>nodesIndex;
-    ArrayList<Edge>edges;
+    List<Node> nodes;
+    List<String>nodesIndex;
+    List<Edge>edges;
 
     public Graph() {
         this.nodes = new ArrayList<Node>();
@@ -42,7 +42,7 @@ public class Graph {
     protected   void  addLine(StopTimeHandler stopTimeHandler, StopHandler stopHandler){ //pour ajouter une ligne de métro
         Map<String, String> nameOfId = stopHandler.getNameOfId();
         Map<String, Map> stops = stopHandler.getStops();
-        for (ArrayList<String> subStopList : new ArrayList<List>(stopTimeHandler.getStopList()) // on prend tous les sets de liste d'arrets
+        for (List<String> subStopList : new ArrayList<List>(stopTimeHandler.getStopList()) // on prend tous les sets de liste d'arrets
              ) {
             Graph subgraph = graphFromSmallListAndStopContent(subStopList,nameOfId,stops);
             this.merge(subgraph);
@@ -50,7 +50,7 @@ public class Graph {
 
     }
 
-    protected Graph graphFromSmallListAndStopContent (ArrayList<String> smallList, Map<String, String> nameOfId,  Map<String,Map> stops){ // l'argument stops c'est du Map<String,Map<String,String>> en vrai mais il veux pas être aussi précis
+    protected Graph graphFromSmallListAndStopContent (List<String> smallList, Map<String, String> nameOfId,  Map<String,Map> stops){ // l'argument stops c'est du Map<String,Map<String,String>> en vrai mais il veux pas être aussi précis
         Graph subGraph = new Graph();
         Node oldNode = new Node();
         Node nowNode = new Node();
@@ -83,8 +83,8 @@ public class Graph {
     }
 
     protected void merge (Graph graphToMerge){
-        ArrayList<Node>toMergeNodes = graphToMerge.getNodes();
-        ArrayList<Edge>toMergeEdges = graphToMerge.getEdges();
+        List<Node>toMergeNodes = graphToMerge.getNodes();
+        List<Edge>toMergeEdges = graphToMerge.getEdges();
 
         for (Node toMergeNode:toMergeNodes //on prend chaque node à merger, si la station existe déjà, les deux mergent, si non, on la rajoute
              ) {
@@ -118,7 +118,7 @@ public class Graph {
     }
     public static Graph loadJson (){
         Gson gson = new Gson();
-        ArrayList<String> rawLines = null;
+        List<String> rawLines = null;
         try {
             rawLines = Files.readAllLines(Paths.get(Library.DatasDirectory+"/data.json"), StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -133,7 +133,7 @@ public class Graph {
         Gson gson = new Gson();
 
         String myObjectJson = gson.toJson(this);
-        ArrayList<String> jsonInput = new ArrayList<String>();
+        List<String> jsonInput = new ArrayList<String>();
         jsonInput.add(myObjectJson);
 
         try {
@@ -158,27 +158,27 @@ public class Graph {
 
     // --------------- les défaults ---------------
 
-    public ArrayList<Node> getNodes() {
+    public List<Node> getNodes() {
         return nodes;
     }
 
-    public void setNodes(ArrayList<Node> nodes) {
+    public void setNodes(List<Node> nodes) {
         this.nodes = nodes;
     }
 
-    public ArrayList<String> getNodesIndex() {
+    public List<String> getNodesIndex() {
         return nodesIndex;
     }
 
-    public void setNodesIndex(ArrayList<String> nodesIndex) {
+    public void setNodesIndex(List<String> nodesIndex) {
         this.nodesIndex = nodesIndex;
     }
 
-    public ArrayList<Edge> getEdges() {
+    public List<Edge> getEdges() {
         return edges;
     }
 
-    public void setEdges(ArrayList<Edge> edges) {
+    public void setEdges(List<Edge> edges) {
         this.edges = edges;
     }
 
@@ -196,19 +196,6 @@ public class Graph {
         else {
             return this.nodes.get(index);
         }
-    }
-
-    public int getOrder (){
-        return nodesIndex.size();
-    }
-
-    public int getSize (){
-        return edges.size();
-    }
-    public ArrayList<Integer> getIndexOfNodeNeighbours(int nodeIndex){
-        Node node = nodes.get(nodeIndex);
-        ArrayList<Edge> nodeEdges = node.getEdgesList();
-
     }
 
 }
