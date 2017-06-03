@@ -1,3 +1,5 @@
+package GraphTools;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +56,7 @@ public class Node {
 
     public void consolidateEdgeOfNode (Edge edge){
         if (edge.getFromId().equals(this.id)){
-//            for (Edge subEdge :this.edgesList) {
+//            for (GraphTools.Edge subEdge :this.edgesList) {
             for (int i = 0; i <this.edgesList.size() ; i++) {
                 Edge subEdge = this.edgesList.get(i);
                 if (subEdge.getToId().equals(edge.getToId()) && subEdge.length==edge.getLength()){

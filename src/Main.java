@@ -1,16 +1,10 @@
-import Algos.Library;
-import com.google.gson.Gson;
+import GraphTools.Graph;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-//        Graph metroGraph = new Graph();
+//        GraphTools.Graph metroGraph = new GraphTools.Graph();
 //        metroGraph.addLine("1");
 //        metroGraph.addLine("2");
 //        metroGraph.addLine("3");

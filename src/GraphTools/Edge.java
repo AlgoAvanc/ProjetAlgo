@@ -1,3 +1,5 @@
+package GraphTools;
+
 import Algos.Library;
 
 import java.util.List;

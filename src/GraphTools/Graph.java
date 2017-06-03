@@ -1,4 +1,9 @@
+package GraphTools;
+
 import Algos.Library;
+import DataExtraction.FileReader;
+import DataExtraction.StopHandler;
+import DataExtraction.StopTimeHandler;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -8,7 +13,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Graph {
     List<Node> nodes;
