@@ -1,5 +1,6 @@
 package GraphTools;
 
+import Algos.Dijkstra;
 import Algos.Library;
 import DataExtraction.FileReader;
 import DataExtraction.StopHandler;
@@ -88,7 +89,7 @@ public class Graph {
 
         for (Node toMergeNode:toMergeNodes //on prend chaque node à merger, si la station existe déjà, les deux mergent, si non, on la rajoute
              ) {
-            Node localCorrespondingNode = getStationNode(toMergeNode.getId());
+            Node localCorrespondingNode = getNodeFromId(toMergeNode.getId());
             if (localCorrespondingNode!=null){
                 localCorrespondingNode.merge(toMergeNode);
             }else {
@@ -101,9 +102,9 @@ public class Graph {
         for (Edge toAjustEdge:toMergeEdges
              ) {
             Node from = toAjustEdge.getFrom();
-            toAjustEdge.setFrom(this.getStationNode(from.getId()));//normalement le from est déjà géré par le node merge mais on insiste
+            toAjustEdge.setFrom(this.getNodeFromId(from.getId()));//normalement le from est déjà géré par le node merge mais on insiste
             Node to = toAjustEdge.getTo();
-            toAjustEdge.setTo(this.getStationNode(to.getId()));
+            toAjustEdge.setTo(this.getNodeFromId(to.getId()));
         }
         this.edges.addAll(toMergeEdges);
         this.edges = Edge.removeDuplicatesInList(this.edges);
@@ -184,11 +185,11 @@ public class Graph {
 
 
     // --------------- les ajoutés ---------------
+    // nodes
     public int getStationNodeIndex (String name){
         return this.nodesIndex.indexOf(name);
     }
-
-    public Node getStationNode (String name){
+    public Node getNodeFromId (String name){
         int index = getStationNodeIndex(name);
         if (index == -1){
             return null;
@@ -197,5 +198,60 @@ public class Graph {
             return this.nodes.get(index);
         }
     }
-    
+    public int getIndexOfNode (Node node){
+        return nodes.indexOf(node);
+    }
+    public Node getNodeFromIndex (int index) {
+        return nodes.get(index);
+    }
+    //graph properties
+    public int getOrder (){
+        return nodesIndex.size();
+    }
+    public int getSize (){
+        return edges.size();
+    }
+
+    //neighbourhood
+    public ArrayList<Node> getNeighboursOfNodeIndex(int nodeIndex){
+        Node node = nodes.get(nodeIndex);
+        List<Edge> nodeEdges = node.getEdgesList();
+        ArrayList<Node> neighbours = new ArrayList<Node>();
+        for (Edge edge: nodeEdges){
+            neighbours.add(edge.to);
+        }
+        return neighbours;
+    }
+    public ArrayList<Integer> getNeighboursIndexOfNodeIndex(int nodeIndex){
+        ArrayList<Node> neighbours = getNeighboursOfNodeIndex(nodeIndex);
+        ArrayList<Integer> neighboursIndex = new ArrayList<Integer>();
+        for (Node neighbour:neighbours) {
+            neighboursIndex.add(getIndexOfNode(neighbour));
+        }
+        return neighboursIndex;
+    }
+
+
+    // ----------------------------------------------------------------------------------------------------------
+    // ------------------------------------------ Interpretes ---------------------------------------------------
+    // ----------------------------------------------------------------------------------------------------------
+
+    public ArrayList<String> NameAPathOfIndexes (ArrayList<Integer> pathOfIndexes){
+        ArrayList<String> path = new ArrayList<String>();
+        List<String> nodeNames = getNodesIndex();
+        for (Integer nodeIndex:pathOfIndexes) {
+            path.add(nodeNames.get(nodeIndex));
+        }
+        return path;
+    }
+    public ArrayList<Node> NodePathOfIndexes (ArrayList<Integer> pathOfIndexes){
+        ArrayList<Node> path = new ArrayList<Node>();
+        List<Node> nodes = getNodes();
+        for (Integer nodeIndex:pathOfIndexes) {
+            path.add(nodes.get(nodeIndex));
+        }
+        return path;
+    }
+
+
 }

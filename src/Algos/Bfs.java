@@ -7,20 +7,27 @@ import GraphTools.Graph;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+
+import static Algos.Library.BubleSortArrylist;
 
 public class Bfs {
-    public ArrayList<Boolean> marked;
-    public ArrayList<Integer> previous;
-    public ArrayList<Integer> distance;
+    protected ArrayList<Boolean> marked;
+    protected ArrayList<Integer> previous;
+    protected ArrayList<Integer> distance;
+    protected Graph baseGraph;
 
-    public Bfs(Graph graph) {
+    public Bfs(Graph graph, String startName){
+        this(graph,graph.getStationNodeIndex(startName));
+    }
+    public Bfs(Graph graph, int startIndex) {
         int cardinality = graph.getOrder();
         marked =  new ArrayList<>(Arrays.asList(new Boolean[cardinality]));
         previous =  new ArrayList<>(Arrays.asList(new Integer[cardinality]));
         distance =  new ArrayList<>(Arrays.asList(new Integer[cardinality]));
         Collections.fill(marked, Boolean.FALSE);
-    }
-    public void bfsDigraph(Graph graph, int startIndex){
+        baseGraph = graph;
+
         ArrayList<Integer> toVisit = new ArrayList<>();
         toVisit.add(startIndex);
         while (!toVisit.isEmpty()) {
@@ -30,9 +37,9 @@ public class Bfs {
                 distance.set(beingVisited,0);
             } else {distance.set(beingVisited, distance.get( previous.get(beingVisited) ) +1 );}
 
-            ArrayList neighbours = graph.getNeightboursSimple(beingVisited);
+            ArrayList neighbours = graph.getNeighboursIndexOfNodeIndex(beingVisited);
             if (neighbours != null){
-                ArrayList<Integer> sortedNeighbours = SortingFunctions.BubleSortArrylist(neighbours);
+                ArrayList<Integer> sortedNeighbours = BubleSortArrylist(neighbours);
                 for (int n = 0 ; n<sortedNeighbours.size(); n++){
                     int neightbour = sortedNeighbours.get(n);
                     if (!marked.get(neightbour)){
@@ -60,8 +67,20 @@ public class Bfs {
         }
         return path;
     }
+    public ArrayList<String> SPWithNames (String nodeName){
+        ArrayList<Integer> pathIndex = SP(baseGraph.getStationNodeIndex(nodeName));
+        ArrayList<String> path = new ArrayList<String>();
+        List<String> nodeNames = baseGraph.getNodesIndex();
+        for (Integer nodeIndex:pathIndex) {
+            path.add(nodeNames.get(nodeIndex));
+        }
+        return path;
+    }
     public void printSP (int v){
-        System.out.println("path : "+this.SP(v)+" | distance : "+this.distTo(v));
+        System.out.println("path : "+this.SP(v)+" | Nombre d'arrets : "+this.distTo(v));
+    }
+    public void printSPWithNames (String nodeName){
+        System.out.println("path : "+this.SPWithNames(nodeName)+" | Nombre d'arrets : "+this.distTo(baseGraph.getStationNodeIndex(nodeName)));
     }
 
     public void print () {

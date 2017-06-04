@@ -59,7 +59,7 @@ public class Node {
 //            for (GraphTools.Edge subEdge :this.edgesList) {
             for (int i = 0; i <this.edgesList.size() ; i++) {
                 Edge subEdge = this.edgesList.get(i);
-                if (subEdge.getToId().equals(edge.getToId()) && subEdge.length==edge.getLength()){
+                if (subEdge.getToId().equals(edge.getToId()) && subEdge.weight ==edge.getWeight()){
                     this.edgesList.set(i,edge);
                 }
             }

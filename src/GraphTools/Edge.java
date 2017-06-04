@@ -9,19 +9,19 @@ transient protected Node from;
 protected String fromId; // on garde les noms car on les retiens pour la serialization
 transient protected Node to;
 protected String toId;
-protected double length;
+protected double weight;
 
     public Edge(Node from, Node to) {
         this.from = from;
         this.fromId = from.getId();
         this.to = to;
         this.toId = to.getId();
-        this.length = Library.meterDistanceBetweenGPSPoints(from.getLatitude(),from.getLongitude(),to.getLatitude(),to.getLongitude());
+        this.weight = Library.meterDistanceBetweenGPSPoints(from.getLatitude(),from.getLongitude(),to.getLatitude(),to.getLongitude());
     }
 
 
     public boolean equals(Edge edge){
-        return ( this.from.getId().equals(edge.getFrom().getId()) && this.to.getId().equals(edge.getTo().getId()) && (this.length == edge.getLength()) );
+        return ( this.from.getId().equals(edge.getFrom().getId()) && this.to.getId().equals(edge.getTo().getId()) && (this.weight == edge.getWeight()) );
     }
 
     // ----------------------------------------------------------------------------------------------------------
@@ -46,12 +46,12 @@ protected double length;
         this.toId = to.getId();
     }
 
-    public double getLength() {
-        return length;
+    public double getWeight() {
+        return weight;
     }
 
-    public void setLength(double length) {
-        this.length = length;
+    public void setWeigth(double length) {
+        this.weight = length;
     }
 
     public String getFromId() {
@@ -82,8 +82,8 @@ protected double length;
         return edgesList;
     }
     public void consolidate (Graph graph){
-        this.to = graph.getStationNode(toId);
-        this.from = graph.getStationNode(fromId);
+        this.to = graph.getNodeFromId(toId);
+        this.from = graph.getNodeFromId(fromId);
 
         this.from.consolidateEdgeOfNode(this);
     }

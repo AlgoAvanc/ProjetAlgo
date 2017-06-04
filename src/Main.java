@@ -1,3 +1,6 @@
+import Algos.Bfs;
+import Algos.Dijkstra;
+import GraphTools.DijkstraSet;
 import GraphTools.Graph;
 
 import java.io.*;
@@ -22,8 +25,17 @@ public class Main {
 //        metroGraph.addLine("13");
 //        metroGraph.addLine("14");
 //        metroGraph.saveInJson();
-
+//
         Graph metroGraph = Graph.loadJson();
+        DijkstraSet dijkstraSet = new DijkstraSet(metroGraph);
+//        System.out.println("Diamètre" + dijkstraSet.getDiameterIndex());
+//        System.out.println("Rayon" + dijkstraSet.getCenterIndex());
+        dijkstraSet.printCenterPath();
+        dijkstraSet.printDiamaterPath();
+//        Bfs bfs = new Bfs(metroGraph,"Marcel Sembat");
+//        bfs.printSPWithNames("Gare de Lyon");
+//        Dijkstra dijkstra = new Dijkstra(metroGraph,"Marcel Sembat");
+//        dijkstra.printSPWithNames("Gare de Lyon");
         System.out.println("fini");
 
 
