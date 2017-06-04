@@ -110,4 +110,15 @@ public class Node {
     public void setLines(List<String> lines) {
         this.lines = lines;
     }
+
+    // ----------------------------------------------------------------------------------------------------------
+    // --------------------------------------------- Clone ------------------------------------------------------
+    // ----------------------------------------------------------------------------------------------------------
+    public Node cloneButNotEdgeList(){
+        Node newnode = new Node(id,latitude,longitude);
+        newnode.setLines(lines);
+        return newnode;
+    }
+
+
 }

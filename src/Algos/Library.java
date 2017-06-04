@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Library {
 
 
-    public static double meterDistanceBetweenGPSPoints(double  lat_a, double  lng_a, double  lat_b, double  lng_b) {
+    public static double kiloMeterDistanceBetweenGPSPoints(double  lat_a, double  lng_a, double  lat_b, double  lng_b) {
         double pk = (double) (180/Math.PI);
 
         double a1 = lat_a / pk;

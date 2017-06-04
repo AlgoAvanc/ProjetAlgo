@@ -14,6 +14,7 @@ public class Dijkstra {
     protected ArrayList<Boolean> marked;
     protected ArrayList<Double> distance;
     protected Graph baseGraph;
+    protected ArrayList<Integer> brockenIndexes; // utile si ne graph n'est pas connecté
 
     public Dijkstra(Graph graph,String startName){
         this(graph,graph.getStationNodeIndex(startName));
@@ -26,6 +27,7 @@ public class Dijkstra {
         marked =  new ArrayList<>(Arrays.asList(new Boolean[cardinality]));
         previous =  new ArrayList<>(Arrays.asList(new Integer[cardinality]));
         distance =  new ArrayList<>(Arrays.asList(new Double[cardinality]));
+        brockenIndexes = new ArrayList<Integer>();
         Collections.fill(marked, Boolean.FALSE);
         Collections.fill(distance, Double.POSITIVE_INFINITY);
         this.baseGraph=graph;
@@ -44,27 +46,30 @@ public class Dijkstra {
 
         while (marked.indexOf(false)!= -1){
             beingVisited = unvisitedDistance.indexOf(Collections.min(unvisitedDistance)); //on prend le noaud à plus petite distance
-            if (!(distance.get(beingVisited)!= Double.POSITIVE_INFINITY && !marked.get(beingVisited))){ System.out.println("on n'est pas connecté !!!");break;}// on a plusieurs sous graphes non connectés car le minimunm des non marqués est à l'infini
-            marked.set(beingVisited,true);
-            unvisitedDistance.set(beingVisited,Double.POSITIVE_INFINITY);// on met à l'infini ce noeud pour ne plus le re-sélectionner
-            List<Edge> edges = baseGraph.getNodeFromIndex(beingVisited).getEdgesList(); // on en prend les edges
-            if (edges!=null){ // si le vertex a quelque lien
-                for (Edge edge:edges) {
-                    int nodeTo = baseGraph.getIndexOfNode(edge.getTo());
+            if (!(distance.get(beingVisited)!= Double.POSITIVE_INFINITY && !marked.get(beingVisited))){
+                brockenIndexes.add(beingVisited);// on a plusieurs sous graphes non connectés car le minimunm des non marqués est à l'infini
+            }else{
+                marked.set(beingVisited,true);
+                unvisitedDistance.set(beingVisited,Double.POSITIVE_INFINITY);// on met à l'infini ce noeud pour ne plus le re-sélectionner
+                List<Edge> edges = baseGraph.getNodeFromIndex(beingVisited).getEdgesList(); // on en prend les edges
+                if (edges!=null){ // si le vertex a quelque lien
+                    for (Edge edge:edges) {
+                        int nodeTo = baseGraph.getIndexOfNode(edge.getTo());
 //                    int nodeFrom = baseGraph.getIndexOfNode(edge.getFrom());
-                    if (!marked.get(nodeTo)){ //on n'update que les vertex non marqués
-                        Double previousDistance = distance.get(nodeTo);
-                        Double newDistance = distance.get(beingVisited)+edge.getWeight();
-                        Double smallestDistance = Double.min(previousDistance,newDistance);
-                        distance.set(nodeTo, smallestDistance ); // on update la distance au minimum entre la précédente et celle qui part de ce noeud
-                        unvisitedDistance.set(nodeTo, distance.get(nodeTo)); //on update les distances à visiter
-                        if (smallestDistance.equals(newDistance) ){
-                            previous.set(nodeTo,beingVisited); // on donne le bon précédent
+                        if (!marked.get(nodeTo)){ //on n'update que les vertex non marqués
+                            Double previousDistance = distance.get(nodeTo);
+                            Double newDistance = distance.get(beingVisited)+edge.getWeight();
+                            Double smallestDistance = Double.min(previousDistance,newDistance);
+                            distance.set(nodeTo, smallestDistance ); // on update la distance au minimum entre la précédente et celle qui part de ce noeud
+                            unvisitedDistance.set(nodeTo, distance.get(nodeTo)); //on update les distances à visiter
+                            if (smallestDistance.equals(newDistance) ){
+                                previous.set(nodeTo,beingVisited); // on donne le bon précédent
+                                edge.setBetweenness(edge.getBetweenness()+1);
+                            }
                         }
                     }
                 }
             }
-
         }
     }
 
@@ -133,5 +138,8 @@ public class Dijkstra {
 
     public ArrayList<Double> getDistance() {
         return distance;
+    }
+    public ArrayList<Integer> getBrockenIndexes(){
+        return brockenIndexes;
     }
 }

@@ -1,6 +1,7 @@
-package GraphTools;
+package Algos;
 
-import Algos.Dijkstra;
+import GraphTools.Edge;
+import GraphTools.Graph;
 
 import java.util.ArrayList;
 
@@ -9,21 +10,36 @@ import java.util.ArrayList;
  */
 public class DijkstraSet{
     protected ArrayList<Dijkstra> dijkstraS;
+    protected ArrayList<Integer> brockenIndexes; // utile si ne graph n'est pas connecté
     protected Graph baseGraph;
 
     // --------------- Constructeur ---------------
 
     public DijkstraSet(Graph baseGraph) {
         this.dijkstraS = new ArrayList<Dijkstra>();
+        this.brockenIndexes = new ArrayList<Integer>();
         this.baseGraph = baseGraph;
-        for (String id :baseGraph.nodesIndex){
-            this.dijkstraS.add(new Dijkstra(baseGraph,id));
-        }
+        update();
 
     }
-
+    public void update(){
+        baseGraph.setEdges(Edge.resetBetweeness(baseGraph.getEdges()));
+        for (String id :baseGraph.getNodesIndex()){
+            Dijkstra dijkstraToAdd = new Dijkstra(baseGraph,id);
+            this.dijkstraS.add(dijkstraToAdd);
+            if (!dijkstraToAdd.getBrockenIndexes().isEmpty()){
+                this.brockenIndexes = dijkstraToAdd.getBrockenIndexes();
+                break;
+            }
+        }
+    }
 
     // --------------- Getters ---------------
+
+
+    public ArrayList<Integer> getBrockenIndexes() {
+        return brockenIndexes;
+    }
 
     public int getindexOfCentralDijkstra (){
         int indexOfCentralDijkstra = 0;
@@ -59,6 +75,44 @@ public class DijkstraSet{
     }
     public void printDiamaterPath(){
         dijkstraS.get(getindexOfDiametralDijkstra()).prinntExentricityWithNames();
+    }
+
+
+    // --------------- Checkers ---------------
+    public void deleteEdgesWithBitwinnessOver (int maxBeetwiness){
+        for (int i = 0; i <baseGraph.getEdges().size() ; i++) {
+            Edge edge = baseGraph.getEdges().get(i);
+            if (edge.getBetweenness()>maxBeetwiness){
+                baseGraph.removeEdge(edge);
+            }
+        }
+    }
+
+    // --------------- Pour la clusterisation ---------------
+    public static ArrayList<DijkstraSet> splitIfBrocken(DijkstraSet dijkstraSet){
+        ArrayList<DijkstraSet> list = new ArrayList<DijkstraSet>();
+
+        if(dijkstraSet.isBrocken()){
+            Graph graph1 = Graph.graphExtract(dijkstraSet.baseGraph,dijkstraSet.brockenIndexes,true);
+            Graph graph2 = Graph.graphExtract(dijkstraSet.baseGraph,dijkstraSet.brockenIndexes,false);
+            list.add(new DijkstraSet(graph1));
+            list.add(new DijkstraSet(graph2));
+            return list;
+        }else {
+            list.add(dijkstraSet);
+            return list;
+        }
+
+    }
+    public boolean isBrocken(){
+        return (! brockenIndexes.isEmpty());
+    }
+
+    public boolean hasBeetweenessOver (int maxBeetweeness){
+        for (Edge edge : baseGraph.getEdges()) {
+            if (edge.getBetweenness()>maxBeetweeness){return true;}
+        }
+        return false;
     }
 
 }

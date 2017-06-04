@@ -1,9 +1,11 @@
-import Algos.Bfs;
-import Algos.Dijkstra;
-import GraphTools.DijkstraSet;
+import Algos.Clusteriser;
+import Algos.DijkstraSet;
 import GraphTools.Graph;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -36,8 +38,10 @@ public class Main {
 //        bfs.printSPWithNames("Gare de Lyon");
 //        Dijkstra dijkstra = new Dijkstra(metroGraph,"Marcel Sembat");
 //        dijkstra.printSPWithNames("Gare de Lyon");
-        System.out.println("fini");
 
+        Graph subGraph = Graph.graphExtract(metroGraph,new ArrayList<Integer>(Arrays.asList(0,1,2,3)),true);
+        Clusteriser clusteriser = new Clusteriser(4,subGraph);
+        System.out.println("fini");
 
     }
 }

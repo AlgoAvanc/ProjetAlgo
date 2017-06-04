@@ -10,13 +10,14 @@ protected String fromId; // on garde les noms car on les retiens pour la seriali
 transient protected Node to;
 protected String toId;
 protected double weight;
+protected int betweenness;
 
     public Edge(Node from, Node to) {
         this.from = from;
         this.fromId = from.getId();
         this.to = to;
         this.toId = to.getId();
-        this.weight = Library.meterDistanceBetweenGPSPoints(from.getLatitude(),from.getLongitude(),to.getLatitude(),to.getLongitude());
+        this.weight = Library.kiloMeterDistanceBetweenGPSPoints(from.getLatitude(),from.getLongitude(),to.getLatitude(),to.getLongitude());
     }
 
 
@@ -62,7 +63,24 @@ protected double weight;
         return toId;
     }
 
-// ----------------------------------------------------------------------------------------------------------
+    public Integer getBetweenness() {
+        return betweenness;
+    }
+
+    public void setBetweenness(Integer betweenness) {
+        this.betweenness = betweenness;
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+    // --------------------------------------------- Cloner ------------------------------------------------------
+    // ----------------------------------------------------------------------------------------------------------
+
+    public Edge cloneButKeepNodes(){ // ca n'a pas d'intéret de garder les nodes mais c'est juste pour prévenir que la référence demaure
+        Edge clone = new Edge(this.from,this.to);
+        return clone;
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
     // --------------------------------------------- Méthodes Statiques -----------------------------------------
     // ----------------------------------------------------------------------------------------------------------
 
@@ -93,5 +111,12 @@ protected double weight;
         }
         return edgesList;
     }
+    public static List<Edge> resetBetweeness (List<Edge> edgesList){
+        for (Edge edge:edgesList) {
+            edge.betweenness = 0;
+        }
+        return edgesList;
+    }
+
 
 }

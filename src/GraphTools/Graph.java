@@ -143,9 +143,6 @@ public class Graph {
             e.printStackTrace();
         }
 
-
-
-
     }
 
 
@@ -252,6 +249,58 @@ public class Graph {
         }
         return path;
     }
+
+
+    // ----------------------------------------------------------------------------------------------------------
+    // --------------------------------------------- Print ------------------------------------------------------
+    // ----------------------------------------------------------------------------------------------------------
+    public void printSimple () {
+        System.out.println(nodesIndex);
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+    // ------------------------------------------ Coupure en 2 --------------------------------------------------
+    // ----------------------------------------------------------------------------------------------------------
+
+//    public static ArrayList<Graph> graphCut (Graph graph, ArrayList<Integer> indexGroup){
+//        ArrayList<Graph> graphs = new ArrayList<Graph>();
+//        graphs.add(Graph.graphExtract(graph,indexGroup,true));
+//        graphs.add(Graph.graphExtract(graph,indexGroup,false));
+//        return graphs;
+//
+//    }
+    public static Graph graphExtract (Graph graph, ArrayList<Integer> indexGroup, boolean indexGroupIsToTake){
+        Graph newGraph = new Graph();
+        for (int i = 0; i <graph.nodes.size() ; i++) {
+            if(indexGroup.indexOf(i)!=-1 == indexGroupIsToTake){  // si ce node est à prendre
+                Node node = graph.nodes.get(i);
+                Node newNode = node.cloneButNotEdgeList();
+                ArrayList newEdgeList = new ArrayList<Edge>();
+                for (Edge edge:node.getEdgesList()) {
+                    if ((indexGroup.indexOf(graph.nodes.indexOf(edge.from))!=-1 == indexGroupIsToTake) && (indexGroup.indexOf(graph.nodes.indexOf(edge.to))!=-1 == indexGroupIsToTake) ){ //si cet edge est à prendre (ie: si from est dedans et doit être pris, et que to aussi )
+                        newEdgeList.add(edge.cloneButKeepNodes());
+                    }
+                }
+                newNode.setEdgesList(newEdgeList);
+
+                newGraph.nodesIndex.add(newNode.getId());
+                newGraph.nodes.add(newNode);
+                newGraph.edges.removeAll(newEdgeList);
+                newGraph.edges.addAll(newEdgeList);
+            }
+        }
+        newGraph.consolidate(); //parce que les Edges pointent encore vers les anciens Nodes
+        return newGraph;
+    }
+
+    // ----------------------------------------------------------------------------------------------------------
+    // ------------------------------------------- Les removers -------------------------------------------------
+    // ----------------------------------------------------------------------------------------------------------
+    public void removeEdge (Edge edgeToRemove){
+        edges.remove(edgeToRemove);
+        nodes.get(nodesIndex.indexOf(edgeToRemove.getFromId())).getEdgesList().remove(edgeToRemove);
+    }
+
 
 
 }
