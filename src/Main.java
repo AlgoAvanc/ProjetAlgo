@@ -1,5 +1,6 @@
 import Algos.Clusteriser;
 import Algos.DijkstraSet;
+import Algos.GraphPlot;
 import GraphTools.Graph;
 
 import java.io.*;
@@ -29,18 +30,26 @@ public class Main {
 //        metroGraph.saveInJson();
 //
         Graph metroGraph = Graph.loadJson();
-        DijkstraSet dijkstraSet = new DijkstraSet(metroGraph);
+//        DijkstraSet dijkstraSet = new DijkstraSet(metroGraph);
+
 //        System.out.println("Diamètre" + dijkstraSet.getDiameterIndex());
 //        System.out.println("Rayon" + dijkstraSet.getCenterIndex());
-        dijkstraSet.printCenterPath();
-        dijkstraSet.printDiamaterPath();
+
+
+//        dijkstraSet.printCenterPath();
+//        dijkstraSet.printDiamaterPath();
+
 //        Bfs bfs = new Bfs(metroGraph,"Marcel Sembat");
 //        bfs.printSPWithNames("Gare de Lyon");
 //        Dijkstra dijkstra = new Dijkstra(metroGraph,"Marcel Sembat");
 //        dijkstra.printSPWithNames("Gare de Lyon");
 
-        Graph subGraph = Graph.graphExtract(metroGraph,new ArrayList<Integer>(Arrays.asList(0,1,2,3)),true);
-        Clusteriser clusteriser = new Clusteriser(4,subGraph);
+//        Graph subGraph = Graph.graphExtract(metroGraph,new ArrayList<Integer>(Arrays.asList(0,1,2,3,4)),true);
+        Clusteriser clusteriser1 = new Clusteriser(10,metroGraph);
+        Clusteriser clusteriser2 = new Clusteriser(20,Graph.loadJson());
+//        metroGraph.draw();
+//        Clusteriser clusteriser = new Clusteriser(15,metroGraph);
+
         System.out.println("fini");
 
     }

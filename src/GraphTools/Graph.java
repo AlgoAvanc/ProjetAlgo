@@ -1,6 +1,7 @@
 package GraphTools;
 
 import Algos.Dijkstra;
+import Algos.GraphPlot;
 import Algos.Library;
 import DataExtraction.FileReader;
 import DataExtraction.StopHandler;
@@ -252,10 +253,23 @@ public class Graph {
 
 
     // ----------------------------------------------------------------------------------------------------------
-    // --------------------------------------------- Print ------------------------------------------------------
+    // ----------------------------------------- Print & Draw ---------------------------------------------------
     // ----------------------------------------------------------------------------------------------------------
     public void printSimple () {
         System.out.println(nodesIndex);
+    }
+    public GraphPlot draw (){
+        GraphPlot graphPlot = new GraphPlot();
+        for (Node node:nodes) {
+            graphPlot.addNode(node);
+        }
+        return graphPlot;
+    }
+    public GraphPlot draw (GraphPlot graphPlot){
+        for (Node node:nodes) {
+            graphPlot.addNode(node);
+        }
+        return graphPlot;
     }
 
     // ----------------------------------------------------------------------------------------------------------

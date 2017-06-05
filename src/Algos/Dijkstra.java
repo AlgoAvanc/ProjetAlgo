@@ -15,6 +15,7 @@ public class Dijkstra {
     protected ArrayList<Double> distance;
     protected Graph baseGraph;
     protected ArrayList<Integer> brockenIndexes; // utile si ne graph n'est pas connecté
+    protected ArrayList<Integer> connectedIndexes; // utile si ne graph n'est pas connecté
 
     public Dijkstra(Graph graph,String startName){
         this(graph,graph.getStationNodeIndex(startName));
@@ -28,6 +29,7 @@ public class Dijkstra {
         previous =  new ArrayList<>(Arrays.asList(new Integer[cardinality]));
         distance =  new ArrayList<>(Arrays.asList(new Double[cardinality]));
         brockenIndexes = new ArrayList<Integer>();
+        connectedIndexes = new ArrayList<Integer>();
         Collections.fill(marked, Boolean.FALSE);
         Collections.fill(distance, Double.POSITIVE_INFINITY);
         this.baseGraph=graph;
@@ -47,8 +49,14 @@ public class Dijkstra {
         while (marked.indexOf(false)!= -1){
             beingVisited = unvisitedDistance.indexOf(Collections.min(unvisitedDistance)); //on prend le noaud à plus petite distance
             if (!(distance.get(beingVisited)!= Double.POSITIVE_INFINITY && !marked.get(beingVisited))){
-                brockenIndexes.add(beingVisited);// on a plusieurs sous graphes non connectés car le minimunm des non marqués est à l'infini
+                while (marked.indexOf(false)!= -1){// on a plusieurs sous graphes non connectés car le minimunm des non marqués est à l'infini
+                    int brockenIndex = marked.indexOf(false);
+                    brockenIndexes.add(brockenIndex);
+                    marked.set(brockenIndex,true);
+                }
+//                brockenIndexes.add(beingVisited);
             }else{
+                connectedIndexes.add(beingVisited);
                 marked.set(beingVisited,true);
                 unvisitedDistance.set(beingVisited,Double.POSITIVE_INFINITY);// on met à l'infini ce noeud pour ne plus le re-sélectionner
                 List<Edge> edges = baseGraph.getNodeFromIndex(beingVisited).getEdgesList(); // on en prend les edges
@@ -142,4 +150,9 @@ public class Dijkstra {
     public ArrayList<Integer> getBrockenIndexes(){
         return brockenIndexes;
     }
+
+    public ArrayList<Integer> getConnectedIndexes() {
+        return connectedIndexes;
+    }
+
 }

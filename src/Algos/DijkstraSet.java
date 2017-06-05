@@ -2,8 +2,12 @@ package Algos;
 
 import GraphTools.Edge;
 import GraphTools.Graph;
+import GraphTools.Node;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Created by etien on 04/06/2017.
@@ -11,27 +15,28 @@ import java.util.ArrayList;
 public class DijkstraSet{
     protected ArrayList<Dijkstra> dijkstraS;
     protected ArrayList<Integer> brockenIndexes; // utile si ne graph n'est pas connecté
+    protected ArrayList<Integer> connectedIndexes;
     protected Graph baseGraph;
+
 
     // --------------- Constructeur ---------------
 
     public DijkstraSet(Graph baseGraph) {
-        this.dijkstraS = new ArrayList<Dijkstra>();
         this.brockenIndexes = new ArrayList<Integer>();
+        this.connectedIndexes = new ArrayList<Integer>();
         this.baseGraph = baseGraph;
         update();
 
     }
     public void update(){
-        baseGraph.setEdges(Edge.resetBetweeness(baseGraph.getEdges()));
+        this.dijkstraS = new ArrayList<Dijkstra>();
+        baseGraph.setEdges(Edge.resetBetweeness(baseGraph.getEdges()));//si non la beetweeness s'envole
+        ArrayList<ArrayList<Integer>> brockenIndexesList =  new ArrayList<ArrayList<Integer>>();
         for (String id :baseGraph.getNodesIndex()){
-            Dijkstra dijkstraToAdd = new Dijkstra(baseGraph,id);
-            this.dijkstraS.add(dijkstraToAdd);
-            if (!dijkstraToAdd.getBrockenIndexes().isEmpty()){
-                this.brockenIndexes = dijkstraToAdd.getBrockenIndexes();
-                break;
-            }
+            this.dijkstraS.add(new Dijkstra(baseGraph,id));
         }
+        brockenIndexesListHandeler();
+
     }
 
     // --------------- Getters ---------------
@@ -114,5 +119,35 @@ public class DijkstraSet{
         }
         return false;
     }
+    protected void brockenIndexesListHandeler (){
+        // --------------- on remplis le connectedIndex ---------------
+        for (int i = 0; i < this.dijkstraS.size(); i++) {
+            ArrayList<Integer> brockenIndexHere = dijkstraS.get(i).brockenIndexes;
+            ArrayList<Integer> connectedIndexHere = dijkstraS.get(i).connectedIndexes;
+            if (connectedIndexes.isEmpty() || connectedIndexes.containsAll(connectedIndexHere)){ //si les deux connected (qui représentent des nouds connectés enshortestpath) ont des noeuds encommuns
+                connectedIndexes.removeAll(connectedIndexHere); //alors on les merge (en fait ils peuvent etre différents et avoir des noeuds en communs du fait que le graph est orienté)
+                connectedIndexes.addAll(connectedIndexHere);
+            }
+        }
+        // --------------- on s'occupe du brockenIndex ---------------
+        for (int i = 0; i <this.dijkstraS.size() ; i++) {
+            brockenIndexes.add(i);
+        }
+        brockenIndexes.removeAll(connectedIndexes);
+    }
 
+    // --------------- Draw ---------------
+    public GraphPlot draw(GraphPlot graphPlot){
+        return  this.baseGraph.draw(graphPlot);
+    }
+    public GraphPlot draw(){
+        GraphPlot graphPlot = new GraphPlot();
+        return  this.baseGraph.draw(graphPlot);
+    }
+    public static GraphPlot drawList (ArrayList<DijkstraSet> dsList, GraphPlot graphPlot){
+        for (DijkstraSet ds:dsList) {
+            ds.baseGraph.draw(graphPlot);
+        }
+        return graphPlot;
+    }
 }
