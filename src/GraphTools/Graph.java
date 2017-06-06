@@ -204,6 +204,7 @@ public class Graph {
     }
     //graph properties
     public int getOrder (){
+        if (nodesIndex ==null){return 0;}
         return nodesIndex.size();
     }
     public int getSize (){
@@ -258,6 +259,7 @@ public class Graph {
     public void printSimple () {
         System.out.println(nodesIndex);
     }
+    public void printWithInfos () {System.out.println("taille "+nodesIndex.size()+" nodes : " + nodesIndex);}
     public GraphPlot draw (){
         GraphPlot graphPlot = new GraphPlot();
         for (Node node:nodes) {

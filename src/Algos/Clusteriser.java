@@ -17,9 +17,9 @@ public class Clusteriser {
         this.maxBeetwinnessAllowed = maxBeetwinnessAllowed;
         this.dijkstraSetList = new ArrayList<DijkstraSet>();
         this.dijkstraSetList.add( new DijkstraSet(graph));
-        this.dijkstraSetList = clusterize(new DijkstraSet(graph));
-        DijkstraSet.drawList(dijkstraSetList,graphPlot);
-//        clusterizeDecreasing();
+//        this.dijkstraSetList = clusterize(new DijkstraSet(graph));
+//        DijkstraSet.drawList(dijkstraSetList,graphPlot);
+        clusterizeDecreasing();
 
     }
 
@@ -42,8 +42,11 @@ public class Clusteriser {
         ArrayList<DijkstraSet> list = new ArrayList<DijkstraSet>();
 
         dijkstraSet.deleteEdgesWithBitwinnessOver(maxBeetwinnessAllowed);
+        dijkstraSet.update();
+
         list.addAll(DijkstraSet.splitIfBrocken(dijkstraSet));
-        for (DijkstraSet dS: list) {
+        for (int i =0 ; i<list.size();i++) {
+            DijkstraSet dS =  list.get(i);
             dS.update();
             if (dS.isBrocken() || dS.hasBeetweenessOver(maxBeetwinnessAllowed)){
 
@@ -57,6 +60,12 @@ public class Clusteriser {
     }
     public ArrayList<DijkstraSet> clusterize (DijkstraSet dijkstraSet) {
         return clusterize(this.maxBeetwinnessAllowed,dijkstraSet);
+    }
+
+    public void print(){
+        for (DijkstraSet ds:dijkstraSetList) {
+            ds.printWithInfos();
+        }
     }
 
 

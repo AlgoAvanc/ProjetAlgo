@@ -81,16 +81,21 @@ public class DijkstraSet{
     public void printDiamaterPath(){
         dijkstraS.get(getindexOfDiametralDijkstra()).prinntExentricityWithNames();
     }
+    public void print(){baseGraph.printSimple();}
+    public void printWithInfos(){baseGraph.printWithInfos();}
 
 
     // --------------- Checkers ---------------
     public void deleteEdgesWithBitwinnessOver (int maxBeetwiness){
+//        boolean edgesDeleted = false;
         for (int i = 0; i <baseGraph.getEdges().size() ; i++) {
             Edge edge = baseGraph.getEdges().get(i);
             if (edge.getBetweenness()>maxBeetwiness){
                 baseGraph.removeEdge(edge);
+//                edgesDeleted = true;
             }
         }
+//        return edgesDeleted;
     }
 
     // --------------- Pour la clusterisation ---------------
@@ -120,11 +125,17 @@ public class DijkstraSet{
         return false;
     }
     protected void brockenIndexesListHandeler (){
+        connectedIndexes = new ArrayList<Integer>();
+        brockenIndexes = new ArrayList<Integer>();
         // --------------- on remplis le connectedIndex ---------------
         for (int i = 0; i < this.dijkstraS.size(); i++) {
             ArrayList<Integer> brockenIndexHere = dijkstraS.get(i).brockenIndexes;
             ArrayList<Integer> connectedIndexHere = dijkstraS.get(i).connectedIndexes;
-            if (connectedIndexes.isEmpty() || connectedIndexes.containsAll(connectedIndexHere)){ //si les deux connected (qui représentent des nouds connectés enshortestpath) ont des noeuds encommuns
+            int numberOfConnectedHere = connectedIndexHere.size();
+            connectedIndexHere.removeAll(connectedIndexes); // on enlève les communs;
+            int numberOfConnectedHereNotInConnected = connectedIndexHere.size();
+
+            if (connectedIndexes.isEmpty() || (numberOfConnectedHere> numberOfConnectedHereNotInConnected)){ //si les deux connected (qui représentent des nouds connectés enshortestpath) ont des noeuds encommuns
                 connectedIndexes.removeAll(connectedIndexHere); //alors on les merge (en fait ils peuvent etre différents et avoir des noeuds en communs du fait que le graph est orienté)
                 connectedIndexes.addAll(connectedIndexHere);
             }
@@ -134,6 +145,11 @@ public class DijkstraSet{
             brockenIndexes.add(i);
         }
         brockenIndexes.removeAll(connectedIndexes);
+//        System.out.println();
+
+//        System.out.println("size" + dijkstraS.size());
+//        System.out.println("connectedIndexes " + connectedIndexes);
+//        System.out.println("brockenIndexes "+brockenIndexes);
     }
 
     // --------------- Draw ---------------

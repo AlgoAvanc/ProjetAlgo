@@ -1,6 +1,4 @@
-import Algos.Clusteriser;
-import Algos.DijkstraSet;
-import Algos.GraphPlot;
+import Algos.*;
 import GraphTools.Graph;
 
 import java.io.*;
@@ -10,6 +8,10 @@ import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+
+        // --------------- création du graph ---------------
+
+
 //        GraphTools.Graph metroGraph = new GraphTools.Graph();
 //        metroGraph.addLine("1");
 //        metroGraph.addLine("2");
@@ -29,26 +31,45 @@ public class Main {
 //        metroGraph.addLine("14");
 //        metroGraph.saveInJson();
 //
+
+        // --------------- récupération du Graph ---------------
+        System.out.println("");
+        System.out.println("on charge le graph");
+
         Graph metroGraph = Graph.loadJson();
-//        DijkstraSet dijkstraSet = new DijkstraSet(metroGraph);
-
-//        System.out.println("Diamètre" + dijkstraSet.getDiameterIndex());
-//        System.out.println("Rayon" + dijkstraSet.getCenterIndex());
 
 
-//        dijkstraSet.printCenterPath();
-//        dijkstraSet.printDiamaterPath();
+        // --------------- bfs ---------------
+        System.out.println("");
+        System.out.println("avec BFS, de Marcel Sembat à Gare de Lyon");
+        Bfs bfs = new Bfs(metroGraph,"Marcel Sembat");
+        bfs.printSPWithNames("Gare de Lyon");
 
-//        Bfs bfs = new Bfs(metroGraph,"Marcel Sembat");
-//        bfs.printSPWithNames("Gare de Lyon");
-//        Dijkstra dijkstra = new Dijkstra(metroGraph,"Marcel Sembat");
-//        dijkstra.printSPWithNames("Gare de Lyon");
 
-//        Graph subGraph = Graph.graphExtract(metroGraph,new ArrayList<Integer>(Arrays.asList(0,1,2,3,4)),true);
+        // --------------- Dijkstra ---------------
+        System.out.println("");
+        System.out.println("avec Dijkstra , de Marcel Sembat à Gare de Lyon");
+        Dijkstra dijkstra = new Dijkstra(metroGraph,"Marcel Sembat");
+        dijkstra.printSPWithNames("Gare de Lyon");
+
+        // --------------- Un pathFinder ---------------
+        System.out.println("");
+        System.out.println("avec beaucoup de dijkstra");
+        DijkstraSet dijkstraSet = new DijkstraSet(metroGraph);
+
+        System.out.println("Diamètre " + dijkstraSet.getDiameter());
+        dijkstraSet.printDiamaterPath();
+        System.out.println("Rayon " + dijkstraSet.getRadius());
+        dijkstraSet.printCenterPath();
+
+
+        // --------------- la clusterisation ---------------
+        System.out.println("");
+        System.out.println("la clusterisation");
+//        Graph subGraph = Graph.graphExtract(metroGraph,new ArrayList<Integer>(Arrays.asList(0,1,2,3,4,55,56)),true);
         Clusteriser clusteriser1 = new Clusteriser(10,metroGraph);
-        Clusteriser clusteriser2 = new Clusteriser(20,Graph.loadJson());
-//        metroGraph.draw();
-//        Clusteriser clusteriser = new Clusteriser(15,metroGraph);
+        clusteriser1.print();
+
 
         System.out.println("fini");
 
