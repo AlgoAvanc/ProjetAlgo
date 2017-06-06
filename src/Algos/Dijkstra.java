@@ -3,6 +3,7 @@ package Algos;
 import GraphTools.Edge;
 import GraphTools.Graph;
 import GraphTools.Node;
+import com.sun.javafx.scene.control.skin.IntegerFieldSkin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,7 +113,20 @@ public class Dijkstra {
 
     public void printSPWithNames (String nodeName){
         int index = baseGraph.getStationNodeIndex(nodeName);
-        System.out.println("path : "+baseGraph.NameAPathOfIndexes(getShortestPathOfIndexes(index))+" | distance : "+this.distTo(index));
+        String pathString ="";
+        ArrayList<Integer> path = getShortestPathOfIndexes(index);
+        ArrayList<String> pathName = baseGraph.NameAPathOfIndexes(path);
+        pathString += " "+pathName.get(0);
+        if (path.size()>0){
+            for (int i = 1; i <path.size() ; i++) {
+                int distance = (int) Math.floor((distTo(i-1)-distTo(i))*1000);
+                String nextNodeName = pathName.get(i);
+                pathString = pathString + " <- "+ distance +"m -> "+ pathName.get(i);
+            }
+        }
+
+
+        System.out.println("path : "+pathString+" | distance totale : "+this.distTo(index));
     }
     public void prinntExentricityWithNames (){
         int exentricityIndex=distance.indexOf(getExentricity());
