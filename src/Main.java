@@ -67,7 +67,7 @@ public class Main {
         System.out.println("");
         System.out.println("la clusterisation");
 //        Graph subGraph = Graph.graphExtract(metroGraph,new ArrayList<Integer>(Arrays.asList(0,1,2,3,4,55,56)),true);
-        Clusteriser clusteriser1 = new Clusteriser(10,metroGraph);
+        Clusteriser clusteriser1 = new Clusteriser(20,metroGraph);
         clusteriser1.print();
 
 
